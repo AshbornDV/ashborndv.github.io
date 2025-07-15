@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Happy Birthday!</title>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(to bottom right, #ffdde1, #ee9ca7);
+      color: #fff;
+      overflow-x: hidden;
+      text-align: center;
+    }
+
+    h1 {
+      font-family: 'Pacifico', cursive;
+      font-size: 3em;
+      margin-top: 1em;
+      color: #fff;
+      text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);
+    }
+
+    p {
+      font-size: 1.2em;
+      margin: 1em auto;
+      max-width: 500px;
+    }
+
+    .photo-example {
+      max-width: 100%;
+      max-height: 300px;
+      border-radius: 10px;
+      margin: 1em auto;
+      display: block;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    }
+
+    .confetti {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 999;
+    }
+  </style>
+</head>
+<body>
+  <canvas class="confetti"></canvas>
+
+  <h1>🎉 Happy Birthday, Prakriti! 🎂</h1>
+  <p>Wishing you a magical day filled with smiles, memories, and all the love your heart can hold. You deserve the world.</p>
+
+  <!-- Replace 'birthday-photo.jpg' with your own photo filename or URL -->
+  <img src="519414793_734089019206022_5074768209600980716_n.jpg" alt="Birthday Memory" class="photo-example" />
+
+  <script>
+    // Confetti animation with rectangles
+    const canvas = document.querySelector(".confetti");
+    const ctx = canvas.getContext("2d");
+    let particles = [];
+    let w, h;
+
+    function initCanvas() {
+      w = canvas.width = window.innerWidth;
+      h = canvas.height = window.innerHeight;
+      particles = Array.from({ length: 150 }, () => ({
+        x: Math.random() * w,
+        y: Math.random() * h - h,
+        r: Math.random() * 6 + 2,
+        d: Math.random() * 100,
+        color: `hsl(${Math.random() * 360}, 100%, 70%)`,
+        tiltAngle: 0,
+        tiltAngleIncrement: 0.1 + Math.random() * 0.1,
+      }));
+    }
+
+    function drawParticles() {
+      ctx.clearRect(0, 0, w, h);
+      for (let p of particles) {
+        ctx.save();
+        ctx.fillStyle = p.color;
+        ctx.translate(p.x, p.y);
+        ctx.rotate(p.tiltAngle);
+        ctx.fillRect(0, 0, p.r, p.r / 2);
+        ctx.restore();
+
+        p.y += Math.cos(p.d) + 1 + p.r / 2;
+        p.x += Math.sin(p.d);
+        p.tiltAngle += p.tiltAngleIncrement;
+        p.d += 0.01;
+
+        if (p.y > h) {
+          p.x = Math.random() * w;
+          p.y = -10;
+          p.tiltAngle = 0;
+        }
+      }
+    }
+
+    function animate() {
+      drawParticles();
+      requestAnimationFrame(animate);
+    }
+
+    window.addEventListener("resize", initCanvas);
+    initCanvas();
+    animate();
+  </script>
+</body>
+</html>
